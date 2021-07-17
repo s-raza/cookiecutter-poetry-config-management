@@ -9,12 +9,7 @@
 6. Renders a basic vscode settings.json file with a dark theme.
 7. Updates the vscode pythonPath setting with the virtual environment python path created using Poetry.
 8. Performs an initial GIT commit of the rendered cookiecutter project, with pre-defined files to ignore in .gitignore.
-<br>
-<br>
 # Python Features
-
-### **Settings**
-<br>
 
 **Settings from json config file**
 
@@ -60,5 +55,6 @@ C:\Users\testuser\projects\pythonproject>ptpython
 >>> cfg.database
 {'dialect': 'mysql+mysqldb', 'user': 'dbuser', 'password': 'dbuserpass', 'host': 'localhost', 'db_name': 'dbname', 'db_port': None, 'db_options': {'charset': 'utf8mb4'}, 'sqlalchemy_options': {'pool_recycle': 3600}, 'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
 
->>>
+>>> cfg.database['conn_string']
+'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'
 ```
