@@ -48,36 +48,42 @@ A default key prefix is already defined in config/config.json. Any settings in t
 
 **Database settings**
 
-If a key "active_database" is defined in either config/config.json or .env files (default key prefix is applied to settings from .env as explained above) the database key corresponding to the database settings is populated into a 'database' variable in the global namespace of config.py. If an "active_database" key is not defined, the 'database' variable will be initialize to None.
+1. *Connecting to a database server*
 
-*Example using **.env:***
-```
-default_test_db = {"dialect": "mysql+mysqldb","user": "dbuser","password": "dbuserpass","host": "localhost","db_name": "dbname","db_port": null,"db_options": {"charset": "utf8mb4"},"sqlalchemy_options": {"pool_recycle": 3600}}
+    If a key "active_database" is defined in either config/config.json or .env files (default key prefix is applied to settings from .env as explained above) the database key corresponding to the database settings is populated into a 'database' variable in the global namespace of config.py. If an "active_database" key is not defined, the 'database' variable will be initialize to None.
 
-default_active_database = "test_db"
-```
+    *Example using **.env:***
+    ```
+    default_test_db = {"dialect": "mysql+mysqldb","user": "dbuser","password": "dbuserpass","host": "localhost","db_name": "dbname","db_port": null,"db_options": {"charset": "utf8mb4"},"sqlalchemy_options": {"pool_recycle": 3600}}
 
-We have a setting `default_active_database` in the .env file which will be available as `active_database` in the global namespace of config.py. The value of the `active_database` variable will be "test_db"
-<br><br>
-There is also a setting `default_test_db` which will be available as `test_db` in the global name space of config.py. The value of the `test_db` variable will be the dictionary with the database settings assigned to the `default_test_db` in the .env file.
-<br><br>
-Effectively a `database` variable will be initialized in the global namespace of config.py, with the settings dictionary assigned to `default_test_db` in the .env file.
-<br><br>
-Addtionally a `conn_string` key will be constructed and added to the `database` variable.
-<br><br>
-*Demonstration*
-```
-PS C:\Users\testuser> cd .\projects\pythonproject\
-PS C:\Users\testuser\projects\pythonproject> poetry shell
-Spawning shell within C:\Users\testuser\AppData\Local\pypoetry\Cache\virtualenvs\pythonproject-B9yC7h6M-py3.9
-Microsoft Windows [Version 10.0.19042.1083]
-(c) Microsoft Corporation. All rights reserved.
+    default_active_database = "test_db"
+    ```
 
-C:\Users\testuser\projects\pythonproject>ptpython
->>> import config as cfg
->>> cfg.database
-{'dialect': 'mysql+mysqldb', 'user': 'dbuser', 'password': 'dbuserpass', 'host': 'localhost', 'db_name': 'dbname', 'db_port': None, 'db_options': {'charset': 'utf8mb4'}, 'sqlalchemy_options': {'pool_recycle': 3600}, 'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
+    We have a setting `default_active_database` in the .env file which will be available as `active_database` in the global namespace of config.py. The value of the `active_database` variable will be "test_db"
+    <br><br>
+    There is also a setting `default_test_db` which will be available as `test_db` in the global name space of config.py. The value of the `test_db` variable will be the dictionary with the database settings assigned to the `default_test_db` in the .env file.
+    <br><br>
+    Effectively a `database` variable will be initialized in the global namespace of config.py, with the settings dictionary assigned to `default_test_db` in the .env file.
+    <br><br>
+    Addtionally a `conn_string` key will be constructed and added to the `database` variable.
+    <br><br>
+    Demo:
+    ```
+    PS C:\Users\testuser> cd .\projects\pythonproject\
+    PS C:\Users\testuser\projects\pythonproject> poetry shell
+    Spawning shell within C:\Users\testuser\AppData\Local\pypoetry\Cache\virtualenvs\pythonproject-B9yC7h6M-py3.9
+    Microsoft Windows [Version 10.0.19042.1083]
+    (c) Microsoft Corporation. All rights reserved.
 
->>> cfg.database['conn_string']
-'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'
-```
+    C:\Users\testuser\projects\pythonproject>ptpython
+    >>> import config as cfg
+    >>> cfg.database
+    {'dialect': 'mysql+mysqldb', 'user': 'dbuser', 'password': 'dbuserpass', 'host': 'localhost', 'db_name': 'dbname', 'db_port': None, 'db_options': {'charset': 'utf8mb4'}, 'sqlalchemy_options': {'pool_recycle': 3600}, 'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
+
+    >>> cfg.database['conn_string']
+    'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'
+    ```
+
+2. *Connecting to SQLITE*
+
+    If the activated database setting has a 'sqlite' key, it's value is assigned as the file name in the connection string for SQLITE
