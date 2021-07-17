@@ -34,23 +34,84 @@ Updating vscode config with virtual env path ...done
 8. Performs an initial GIT commit of the rendered cookiecutter project, with pre-defined files to ignore in .gitignore.
 # Python Features
 
+Settings for your Python program can be defined in two locations - `.json` files in the `config` directory and its sub directories or the `.env` file.
+
+Once the settings are defined in either of these locations, they can be accessed by importing the `config.py` module anywhere in your code.
+
+The values of the configuration keys with the same name accross all the setting sources (`config` directory and `.env`) are collected under a common key name.
+
+***Example Usage***
+
+*Settings from `config/config.json`*
+```
+{
+    "env_config_key": "default_",
+    "emailer": {
+        "send": true
+    }
+}
+
+```
+
+*Settings from `config/emailer/email_config.json`*
+```
+{
+    "emailer": {
+        "subject": "Subject",
+        "body": "Body"
+    }
+}
+
+```
+
+*Settings from `.env`*
+```
+default_emailer = {"username": "Username", "password": "Password", "api_key": {"secret": "Secret", "key": "KEY"}}
+
+```
+
+*Using the config settings defined above in your program*
+```
+C:\Users\testuser\projects\pythonproject>ptpython
+>>> import config as cfg
+>>> import pprint as pp
+
+>>> pp.pp(cfg.emailer)
+{'send': True,
+ 'subject': 'Subject',
+ 'body': 'Body',
+ 'username': 'Username',
+ 'password': 'Password',
+ 'api_key': {'secret': 'Secret', 'key': 'KEY'}}
+
+>>> cfg.emailer["api_key"]["secret"]
+'Secret'
+
+>>> cfg.emailer["api_key"]["key"]
+'KEY'
+
+>>> cfg.emailer['send'] is False
+False
+```
+
 **Settings from json config file**
 
-Loading of settings from a config folder that has *.json files. Each key from all the .json files found in the "config" folder and its sub-folders is added to the global namespace of the config.py module.
+Files with `.json` extension in the `config` directory can be organized into sub directories having one or more `.json` files. As long as the file extension is `.json` and the contents of it follow standard json formatting, the settings will be accessible in your Python progam.
+
+Each key from all the `.json` files found in the `config` folder and its sub-folders is added to the global namespace of the config.py module.
 <br>
 
 **Sensitive settings from .env files**
 
-Loading of settings from a .env file. This is to be used to populate sensitive settings like passwords and API keys. The .env file is excluded by default from the GIT repository created during intialization of the cookiecutter project.
-<br><br>
-A default key prefix is already defined in config/config.json. Any settings in the .env file having this prefix are populated in to the global namespace of config.py. Settings that do not have this prefix are ignored.
-<br>
+This is to be used to populate sensitive settings like passwords and API keys. The `.env` file is excluded by default from the GIT repository created during intialization of the cookiecutter project.
+
+Settings in the `.env` file can be defined just like environment variables. However a prefix string should be attached to each setting entry, which should be defined in one of the `.json` files in the `config` directory with the `env_config_key`. A default `env_config_key` with the value `default_` is already defined in the `config/config.json` file that is rendered by cookiecutter. Settings that do not have this prefix in the `.env` file are ignored.
 
 **Database settings**
 
 1. *Connecting to a database server*
 
-    If a key "active_database" is defined in either config/config.json or .env files (default key prefix is applied to settings from .env as explained above) the database key corresponding to the database settings is populated into a 'database' variable in the global namespace of config.py. If an "active_database" key is not defined, the 'database' variable will be initialize to None.
+    If a key "active_database" is defined in either config/config.json or .env files (default key prefix is applied to settings from .env as explained above) the database key corresponding to the database settings is populated into a 'database' variable in the global namespace of config.py. If an "active_database" key is not defined, the 'database' variable will be initialized to None.
 
     *Example using **.env:***
     ```
@@ -78,6 +139,7 @@ A default key prefix is already defined in config/config.json. Any settings in t
     C:\Users\testuser\projects\pythonproject>ptpython
     >>> import config as cfg
     >>> import pprint as pp
+
     >>> pp.pp(cfg.database, indent=4)
     {   'dialect': 'mysql+mysqldb',
         'user': 'dbuser',
@@ -95,4 +157,4 @@ A default key prefix is already defined in config/config.json. Any settings in t
 
 2. *Connecting to SQLITE*
 
-    If the activated database setting has a 'sqlite' key, it's value is assigned as the file name in the connection string for SQLITE
+    If the activated database setting has a 'sqlite' key, it's value is assigned as the file name for the SQLITE file in the connection string for it.
