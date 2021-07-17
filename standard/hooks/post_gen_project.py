@@ -56,7 +56,8 @@ venv_full_path = os.path.join(venv_path, venv_hash)
 
 print(f'Poetry virtual env installed at: {venv_full_path}')
 
-venv_python = os.path.join(venv_full_path, 'Scripts', 'python')
+python_subdir = "Scripts" if platform_ == "Windows" else "bin"
+venv_python = os.path.join(venv_full_path, python_subdir, 'python')
 
 git_init = run('Initializing GIT repo', ['git', 'init', '.'])
 pre_commit_install = run('Installing pre-commit', [venv_python, '-m', 'pre_commit', 'install'])
