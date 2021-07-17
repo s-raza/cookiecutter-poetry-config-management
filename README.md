@@ -1,5 +1,9 @@
 # Usage
+## Prerequisites
+1. Install [cookiecutter](https://cookiecutter.readthedocs.io/en/latest/installation.html)
+2. Install [poetry](https://python-poetry.org/docs/#installation)
 
+## Run cookiecutter to initialize a new Python project
 ```
 PS C:\Users\testuser\projects> cookiecutter https://github.com/s-raza/cookiecutter-poetry-vscode --directory standard
 project_name [pythonproject]:
