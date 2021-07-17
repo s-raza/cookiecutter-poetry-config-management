@@ -71,6 +71,18 @@ def __get_dot_env_dict(
     return ret_dict
 
 
+def __update_config(
+    dict_to_update: Dict[str, Any], config_dict: Dict[str, Any]
+) -> None:
+
+    for config_key, settings in config_dict.items():
+
+        if config_key in dict_to_update:
+            dict_to_update[config_key].update(settings)
+        else:
+            dict_to_update[config_key] = settings
+
+
 def __load_config_dir(conf_dir: str = "./config") -> None:
 
     config_files_list = __get_json_config_files(conf_dir)
@@ -81,23 +93,16 @@ def __load_config_dir(conf_dir: str = "./config") -> None:
 
         with open(f) as file_data:
 
-            file_config_dict = json.load(file_data)
-
-            for config_key, settings in file_config_dict.items():
-
-                if config_key in all_config:
-                    all_config[config_key].update(settings)
-                else:
-                    all_config[config_key] = settings
+            json_cfg_dict = json.load(file_data)
+            __update_config(all_config, json_cfg_dict)
 
     dotenv_path = all_config.get("dotenv_file_path")
-
     dotenv = dotenv_values(dotenv_path)
     dotenv_cfg_dict = __get_dot_env_dict(
         dotenv, env_config_key=all_config["env_config_key"]
     )
 
-    all_config.update(dotenv_cfg_dict)
+    __update_config(all_config, dotenv_cfg_dict)
 
     if all_config.get("active_database") is not None:
         all_config["database"] = all_config[all_config["active_database"]]
