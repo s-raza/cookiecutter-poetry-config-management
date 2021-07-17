@@ -50,7 +50,6 @@ The values of the configuration keys with the same name accross all the setting 
         "send": true
     }
 }
-
 ```
 
 *Settings from `config/emailer/email_config.json`*
@@ -61,13 +60,11 @@ The values of the configuration keys with the same name accross all the setting 
         "body": "Body"
     }
 }
-
 ```
 
 *Settings from `.env`*
 ```
 default_emailer = {"username": "Username", "password": "Password", "api_key": {"secret": "Secret", "key": "KEY"}}
-
 ```
 
 *Using the config settings defined above in your program*
@@ -153,6 +150,20 @@ Settings in the `.env` file can be defined just like environment variables. Howe
 
     >>> cfg.database['conn_string']
     'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'
+
+    >>> cfg.active_database
+    'test_db'
+
+    >>> pp.pp(cfg.test_db, indent=4)
+    {   'dialect': 'mysql+mysqldb',
+        'user': 'dbuser',
+        'password': 'dbuserpass',
+        'host': 'localhost',
+        'db_name': 'dbname',
+        'db_port': None,
+        'db_options': {'charset': 'utf8mb4'},
+        'sqlalchemy_options': {'pool_recycle': 3600},
+        'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
     ```
 
 2. *Connecting to SQLITE*
