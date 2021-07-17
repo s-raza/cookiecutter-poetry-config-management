@@ -51,7 +51,7 @@ venv_full_path = os.path.join(venv_path, venv_hash)
 
 print(f'Poetry virtual env installed at: {venv_full_path}')
 
-venv_python = os.path.join(venv_full_path, 'Scripts', 'python.exe')
+venv_python = os.path.join(venv_full_path, 'Scripts', 'python')
 
 git_init = run('Initializing GIT repo', ['git', 'init', '.'])
 pre_commit_install = run('Installing pre-commit', [venv_python, '-m', 'pre_commit', 'install'])
@@ -62,5 +62,6 @@ git_commit = run('Committing to GIT repo', ['git', 'commit', '-m', 'Initialize e
 print('Updating vscode config with virtual env path ...', end='', flush=True)
 write_pythonpath_vscode(venv_python)
 print('done')
+print()
 
 sys.exit(0)
