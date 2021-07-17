@@ -2,8 +2,5 @@
     "project_name": "pythonproject",
     "pyversion": "3.9",
     "authors": "[]",
-    "black_target_versions": "[\"py39\"]",
-    "gitignore": ".gitignore",
-    "vscode": ".vscode",
-    "env": ".env"
+    "black_target_versions": "[\"py39\"]"
 }
