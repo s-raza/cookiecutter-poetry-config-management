@@ -77,8 +77,17 @@ A default key prefix is already defined in config/config.json. Any settings in t
 
     C:\Users\testuser\projects\pythonproject>ptpython
     >>> import config as cfg
-    >>> cfg.database
-    {'dialect': 'mysql+mysqldb', 'user': 'dbuser', 'password': 'dbuserpass', 'host': 'localhost', 'db_name': 'dbname', 'db_port': None, 'db_options': {'charset': 'utf8mb4'}, 'sqlalchemy_options': {'pool_recycle': 3600}, 'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
+    >>> import pprint as pp
+    >>> pp.pp(cfg.database, indent=4)
+    {   'dialect': 'mysql+mysqldb',
+        'user': 'dbuser',
+        'password': 'dbuserpass',
+        'host': 'localhost',
+        'db_name': 'dbname',
+        'db_port': None,
+        'db_options': {'charset': 'utf8mb4'},
+        'sqlalchemy_options': {'pool_recycle': 3600},
+        'conn_string': 'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'}
 
     >>> cfg.database['conn_string']
     'mysql+mysqldb://dbuser:dbuserpass@localhost/dbname?charset=utf8mb4&'
