@@ -1,3 +1,22 @@
+# Usage
+
+```
+PS C:\Users\testuser\projects> cookiecutter https://github.com/s-raza/cookiecutter-poetry-vscode --directory standard
+project_name [pythonproject]:
+pyversion [3.9]:
+authors [[]]:
+black_target_versions [["py39"]]:
+
+Installing poetry virtual env ...done
+Poetry virtual env installed at: C:\Users\testuser\AppData\Local\pypoetry\Cache\virtualenvs\pythonproject-B9yC7h6M-py3.9
+Initializing GIT repo ...done
+Installing pre-commit ...done
+Auto Updating pre-commit ...done
+Adding project files to GIT repo ...done
+Committing to GIT repo ...done
+Updating vscode config with virtual env path ...done
+```
+
 # Cookiecutter Features
 
 1. Intializes [Python](https://www.python.org
