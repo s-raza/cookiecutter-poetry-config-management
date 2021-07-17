@@ -2,6 +2,11 @@ import subprocess as sub
 import json
 import sys
 import os
+import platform
+
+
+platform_ = platform.system()
+shell_ = True if platform_ == 'Windows' else False
 
 
 def run(msg, cmd_arr, stderr2out=False, print_output=False):
@@ -9,7 +14,7 @@ def run(msg, cmd_arr, stderr2out=False, print_output=False):
     print(f'{msg} ...', end='', flush=True)
 
     if stderr2out is False:
-        res = sub.run(cmd_arr, stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
+        res = sub.run(cmd_arr, stdout=sub.PIPE, stderr=sub.PIPE, shell=shell_)
 
         err = res.stderr.decode('latin1')
 
@@ -23,7 +28,7 @@ def run(msg, cmd_arr, stderr2out=False, print_output=False):
             print(f'\nCommand run Error: {cmd_arr}\nError:\n{err}\n')
             sys.exit(1)
     else:
-        output = sub.run(cmd_arr, stdout=sub.PIPE, stderr=sub.STDOUT, shell=True).stdout.decode('latin1')
+        output = sub.run(cmd_arr, stdout=sub.PIPE, stderr=sub.STDOUT, shell=shell_).stdout.decode('latin1')
         if print_output is True:
             print(f'\n{output}\n')
         print('done')
@@ -44,7 +49,7 @@ def write_pythonpath_vscode(pypath, vscode_config_path='.vscode/settings.json'):
 print()
 poetry_install = run('Installing poetry virtual env', ['poetry', 'install'])
 
-poetry_output = poetry_install.split('\r\n')[0].split()
+poetry_output = poetry_install.split(os.linesep)[0].split()
 venv_path = poetry_output[-1]
 venv_hash = poetry_output[-3]
 venv_full_path = os.path.join(venv_path, venv_hash)
