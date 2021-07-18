@@ -91,37 +91,65 @@ def __update_config(
             dict_to_update[config_key] = settings
 
 
-def __load_config_dir(conf_dir: str = "config") -> None:
+def __get_db_cfg_dict(all_cfg: Dict[str, Any]) -> Dict[str, Any]:
 
-    config_files_list = __get_json_config_files(conf_dir)
-    all_config: Dict[str, Any] = {}
-    dotenv_path: Any = ""
+    db_cfg_dict: Dict[str, Any] = {}
 
-    for f in config_files_list:
+    if all_cfg.get("active_database") is not None:
+        db_cfg_dict["database"] = all_cfg[all_cfg["active_database"]]
+        db_cfg_dict["database"]["conn_string"] = __get_engine_string(
+            db_cfg_dict["database"]
+        )
+    else:
+        all_cfg["database"] = None
 
-        with open(f) as file_data:
-            json_cfg_dict = json.load(file_data)
-            __update_config(all_config, json_cfg_dict)
+    return db_cfg_dict
 
-    env_config_key = all_config.get("env_config_key")
+
+def __get_env_cfg_dict(json_cfg_dict: Dict[str, Any]) -> Dict[str, Any]:
+
+    env_config_key = json_cfg_dict.get("env_config_key")
 
     if env_config_key is not None:
-        dotenv_path = all_config.get("dotenv_file_path")
+        dotenv_path = json_cfg_dict.get("dotenv_file_path")
         dotenv = dotenv_values(dotenv_path)
         dotenv_cfg_dict = __get_dot_env_dict(
             dotenv, env_config_key=env_config_key
         )
-        __update_config(all_config, dotenv_cfg_dict)
-
-    if all_config.get("active_database") is not None:
-        all_config["database"] = all_config[all_config["active_database"]]
-        all_config["database"]["conn_string"] = __get_engine_string(
-            all_config["database"]
-        )
     else:
-        all_config["database"] = None
+        dotenv_cfg_dict = {}
 
-    globals().update(all_config)
+    return dotenv_cfg_dict
 
 
-__load_config_dir()
+def __get_json_cfg_dict(cfg_dir: str) -> Dict[str, Any]:
+
+    config_files_list = __get_json_config_files(cfg_dir)
+    json_config: Dict[str, Any] = {}
+
+    for f in config_files_list:
+
+        with open(f) as file_data:
+            json_cfg_file_dict = json.load(file_data)
+            __update_config(json_config, json_cfg_file_dict)
+
+    return json_config
+
+
+def __get_all_settings(cfg_dir: str = "config") -> Dict[str, Any]:
+
+    all_cfg: Dict[str, Any] = {}
+
+    json_cfg_dict = __get_json_cfg_dict(cfg_dir)
+    __update_config(all_cfg, json_cfg_dict)
+
+    env_cfg_dict = __get_env_cfg_dict(json_cfg_dict)
+    __update_config(all_cfg, env_cfg_dict)
+
+    db_cfg_dict = __get_db_cfg_dict(all_cfg)
+    __update_config(all_cfg, db_cfg_dict)
+
+    return all_cfg
+
+
+globals().update(__get_all_settings())
