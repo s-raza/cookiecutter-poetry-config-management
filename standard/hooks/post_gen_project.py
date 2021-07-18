@@ -53,14 +53,23 @@ def write_pythonpath_vscode(
 
 
 print()
-poetry_install = run("Installing poetry virtual env", ["poetry", "install"])
+poetry_install = run(
+    "Installing poetry virtual env", ["poetry", "install"],
+)
 
-poetry_output = poetry_install.split(os.linesep)[0].split()
-venv_path = poetry_output[-1]
-venv_hash = poetry_output[-3]
-venv_full_path = os.path.join(venv_path, venv_hash)
-
-print(f"Poetry virtual env installed at: {venv_full_path}")
+if "No dependencies to install or update" not in poetry_install:
+    poetry_output = poetry_install.split(os.linesep)[0].split()
+    venv_path = poetry_output[-1]
+    venv_hash = poetry_output[-3]
+    venv_full_path = os.path.join(venv_path, venv_hash)
+    print(f"Poetry virtual env installed at: {venv_full_path}")
+else:
+    poetry_path = run(
+        "Existing poetry virtual env found, retreiving path",
+        ["poetry", "env", "info", "-p"],
+    )
+    venv_full_path = poetry_path.split(os.linesep)[0]
+    print(f"Using existing Poetry virtual env path: {venv_full_path}")
 
 python_subdir = "Scripts" if platform_ == "Windows" else "bin"
 venv_python = os.path.join(venv_full_path, python_subdir, "python")
