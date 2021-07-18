@@ -34,7 +34,7 @@ Updating vscode config with virtual env path ...done
 8. Performs an initial GIT commit of the rendered cookiecutter project, with pre-defined files to ignore in .gitignore.
 # Python Features
 
-Settings for your Python program can be defined in two locations - `.json` files in the `config` directory and its sub directories or the `.env` file. The `config` directory rendered in the main project directory.
+Settings for your Python program can be defined in two locations - `.json` files in the `config` directory and its sub directories or the `.env` file. The `config` directory is rendered by cookiecutter in the main project directory by default.
 
 Once the settings are defined in either of these locations, they can be accessed by importing the `config.py` module anywhere in your code.
 
