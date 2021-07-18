@@ -103,13 +103,15 @@ def __load_config_dir(conf_dir: str = "config") -> None:
             json_cfg_dict = json.load(file_data)
             __update_config(all_config, json_cfg_dict)
 
-    dotenv_path = all_config.get("dotenv_file_path")
-    dotenv = dotenv_values(dotenv_path)
-    dotenv_cfg_dict = __get_dot_env_dict(
-        dotenv, env_config_key=all_config["env_config_key"]
-    )
+    env_config_key = all_config.get("env_config_key")
 
-    __update_config(all_config, dotenv_cfg_dict)
+    if env_config_key is not None:
+        dotenv_path = all_config.get("dotenv_file_path")
+        dotenv = dotenv_values(dotenv_path)
+        dotenv_cfg_dict = __get_dot_env_dict(
+            dotenv, env_config_key=env_config_key
+        )
+        __update_config(all_config, dotenv_cfg_dict)
 
     if all_config.get("active_database") is not None:
         all_config["database"] = all_config[all_config["active_database"]]
