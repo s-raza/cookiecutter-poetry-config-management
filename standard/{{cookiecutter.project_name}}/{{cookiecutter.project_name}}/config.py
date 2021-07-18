@@ -130,7 +130,10 @@ def __get_json_cfg_dict(cfg_dir: str) -> Dict[str, Any]:
     for f in config_files_list:
 
         with open(f) as file_data:
-            json_cfg_file_dict = json.load(file_data)
+            try:
+                json_cfg_file_dict = json.load(file_data)
+            except json.decoder.JSONDecodeError:
+                json_cfg_file_dict = {}
             __update_config(json_config, json_cfg_file_dict)
 
     return json_config
