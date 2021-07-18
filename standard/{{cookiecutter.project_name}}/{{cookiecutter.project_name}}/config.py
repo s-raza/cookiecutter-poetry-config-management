@@ -14,8 +14,11 @@ def __get_engine_string(database: Dict[str, Any]) -> str:
 
     sqlite_file = database.get("sqlite")
 
-    if sqlite_file:
-        retval = "sqlite:///{}".format(sqlite_file)
+    if database in [None, {}]:
+        return ""
+
+    elif database.get("sqlite") is not None:
+        return "sqlite:///{}".format(sqlite_file)
 
     else:
 
@@ -41,7 +44,7 @@ def __get_engine_string(database: Dict[str, Any]) -> str:
             for opt, val in database["db_options"].items():
                 retval = retval + opt + "=" + val + "&"
 
-    return retval
+        return retval
 
 
 def __get_json_config_files(dir: str) -> List[str]:
