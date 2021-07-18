@@ -34,7 +34,7 @@ Updating vscode config with virtual env path ...done
 8. Performs an initial GIT commit of the rendered cookiecutter project, with pre-defined files to ignore in .gitignore.
 # Python Features
 
-Settings for your Python program can be defined in two locations - `.json` files in the `config` directory and its sub directories or the `.env` file.
+Settings for your Python program can be defined in two locations - `.json` files in the `config` directory and its sub directories or the `.env` file. The `config` directory rendered in the main project directory.
 
 Once the settings are defined in either of these locations, they can be accessed by importing the `config.py` module anywhere in your code.
 
@@ -42,7 +42,7 @@ The values of the configuration keys with the same name accross all the setting 
 
 ***Example Usage***
 
-*Settings from `config/config.json`*
+*Settings from `pythonproject/config/config.json`*
 ```
 {
     "env_config_key": "default_",
@@ -52,7 +52,7 @@ The values of the configuration keys with the same name accross all the setting 
 }
 ```
 
-*Settings from `config/emailer/email_config.json`*
+*Settings from `pythonproject/config/emailer/email_config.json`*
 ```
 {
     "emailer": {
@@ -70,7 +70,7 @@ default_emailer = {"username": "Username", "password": "Password", "api_key": {"
 *Using the config settings defined above in your program*
 ```
 C:\Users\testuser\projects\pythonproject>ptpython
->>> import config as cfg
+>>> import pythonproject.config as cfg
 >>> import pprint as pp
 
 >>> pp.pp(cfg.emailer)
@@ -134,7 +134,7 @@ Settings in the `.env` file can be defined just like environment variables. Howe
     (c) Microsoft Corporation. All rights reserved.
 
     C:\Users\testuser\projects\pythonproject>ptpython
-    >>> import config as cfg
+    >>> import pythonproject.config as cfg
     >>> import pprint as pp
 
     >>> pp.pp(cfg.database, indent=4)
