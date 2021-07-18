@@ -33,3 +33,16 @@ def test_update_config_blanks():
 
     cfg.__update_config(dict_to_update, dict_to_update_with)
     TestCase().assertDictEqual(dict_to_update, updated_dict)
+
+
+def test_db_eng_str_sqlite():
+
+    db_dict = {"sqlite": "sqlite_file.db", "db_port": 3333}
+    correct = f"sqlite:///{db_dict['sqlite']}"
+    assert cfg.__get_engine_string(db_dict) == correct
+
+
+def test_db_eng_str_blank():
+
+    db_dict = {}
+    assert cfg.__get_engine_string(db_dict) == ""
