@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+from pathlib import Path
 from typing import Any, Dict, List
 from urllib.parse import quote_plus
 
@@ -45,7 +46,14 @@ def __get_engine_string(database: Dict[str, Any]) -> str:
 
 def __get_json_config_files(dir: str) -> List[str]:
 
-    config_dir = f"{dir}/"
+    curr_dir = os.path.join(".", dir)
+
+    if Path(curr_dir).is_dir() is False:
+        config_dir = os.path.join(".", "{{cookiecutter.project_name}}", dir)
+    else:
+        config_dir = f"{curr_dir}"
+
+    config_dir = f"{config_dir}/"
     json_filter = os.path.join(config_dir, "**", "*.json")
 
     return [f for f in glob.glob(json_filter, recursive=True)]
@@ -83,7 +91,7 @@ def __update_config(
             dict_to_update[config_key] = settings
 
 
-def __load_config_dir(conf_dir: str = "./config") -> None:
+def __load_config_dir(conf_dir: str = "config") -> None:
 
     config_files_list = __get_json_config_files(conf_dir)
     all_config: Dict[str, Any] = {}
@@ -92,7 +100,6 @@ def __load_config_dir(conf_dir: str = "./config") -> None:
     for f in config_files_list:
 
         with open(f) as file_data:
-
             json_cfg_dict = json.load(file_data)
             __update_config(all_config, json_cfg_dict)
 
