@@ -1,5 +1,5 @@
-from {{cookiecutter.project_name}} import __version__
 import {{cookiecutter.project_name}}.config as cfg
+from {{cookiecutter.project_name}} import __version__
 
 
 def test_version():
@@ -7,4 +7,4 @@ def test_version():
 
 
 def test_env_config_key_present():
-    assert hasattr(cfg, 'env_config_key')
+    assert hasattr(cfg, "env_config_key")
