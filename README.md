@@ -169,3 +169,42 @@ Settings in the `.env` file can be defined just like environment variables. Howe
 2. *Connecting to SQLITE*
 
     If the activated database setting has a 'sqlite' key, it's value is assigned as the file name for the SQLITE file in the connection string for it.
+
+    *Cotents of `pythonproject/config/config.json`*
+    ```
+    {
+        "env_config_key": "default_",
+        "test_db": {"sqlite": "sqlite_file.db"}
+    }
+    ```
+
+    *Cotents of `pythonproject/.env`*
+    ```
+    default_project_name = pythonproject
+
+    default_test_db = {"dialect": "mysql+mysqldb","user": "dbuser","password": "dbuserpass","host": "localhost","db_name": "dbname","db_port": null,"db_options": {"charset": "utf8mb4"},"sqlalchemy_options": {"pool_recycle": 3600}}
+
+    default_active_database = "test_db"
+    ```
+
+    *Usage*
+    ```
+    C:\Users\testuser\projects\pythonproject>ptpython
+    >>> import pythonproject.config as cfg
+    >>> import pprint as pp
+
+    >>> pp.pp(cfg.database, indent=4)
+    {   'sqlite': 'sqlite_file.db',
+        'dialect': 'mysql+mysqldb',
+        'user': 'dbuser',
+        'password': 'dbuserpass',
+        'host': 'localhost',
+        'db_name': 'dbname',
+        'db_port': None,
+        'db_options': {'charset': 'utf8mb4'},
+        'sqlalchemy_options': {'pool_recycle': 3600},
+        'conn_string': 'sqlite:///sqlite_file.db'}
+
+    >>> cfg.database["conn_string"]
+    'sqlite:///sqlite_file.db'
+```
