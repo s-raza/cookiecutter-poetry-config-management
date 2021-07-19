@@ -207,4 +207,4 @@ Settings in the `.env` file can be defined just like environment variables. Howe
 
     >>> cfg.database["conn_string"]
     'sqlite:///sqlite_file.db'
-```
+    ```
